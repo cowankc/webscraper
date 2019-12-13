@@ -17,7 +17,7 @@ let NewArticle = new Schema ({
         required: true,
         unique: true
     },
-    save: {
+    saved: {
         type: Boolean
     },
     comment: {
