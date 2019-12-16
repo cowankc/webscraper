@@ -5,17 +5,17 @@ const Schema = mongoose.Schema;
 let NewArticle = new Schema ({
     headline: {
         type: String,
-        required: true,
-        unique: true
+        required: false,
+        unique: false
     },
     summary: {
         type: String,
-        required: true,
+        required: false,
     },
     url: {
         type: String,
-        required: true,
-        unique: true
+        required: false,
+        unique: false
     },
     saved: {
         type: Boolean

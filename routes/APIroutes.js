@@ -8,10 +8,10 @@ router.get("/api/scrape", function(re,res) {
     axios.get("https://www.theringer.com/").then(function(response) {
         let article = {};
         let $ = cheerio.load(response.data);
-        $(".c-entry-box--compact__title").each(function(i,element) {
-            article.title = $(element).children("a").text();
-            article.url = $(element).children("a").attr("href");
-            article.summary = $(element).children("p").text();
+        $(".c-entry-box--compact__body").each(function(i,element) {
+            article.title = $(this).children("h2").children("a").text();
+            article.url = $(this).children("h2").children("a").attr("href");
+            article.summary = $(this).children("p").text();
             article.saved = false;
             if (article.title && article.url) {
                 db.Article.create(article).then(function(dbArticle){
@@ -25,7 +25,7 @@ router.get("/api/scrape", function(re,res) {
     });
 });
 
-router.get("api/articles", function(req,res) {
+router.get("/api/articles", function(req,res) {
     db.Article.find({ "saved": false}).then(function(dbArticle) {
         res.json(dbArticle);
     })
@@ -34,7 +34,7 @@ router.get("api/articles", function(req,res) {
     });
 });
 
-router.put("api/articles/:id", function(req,res) {
+router.put("/api/articles/:id", function(req,res) {
     db.Article.findOneAndUpdate(
         { id: req.params.id},
         { $set: {saved: true}}
@@ -46,7 +46,7 @@ router.put("api/articles/:id", function(req,res) {
     });
 });
 
-router.get("api/articles/saved", function(req,res) {
+router.get("/api/articles/saved", function(req,res) {
     db.Article.find({"saved": true}).then(function(dbArticle) {
         res.json(dbArticle);
     })
@@ -55,7 +55,7 @@ router.get("api/articles/saved", function(req,res) {
     });
 });
 
-router.get("api/articles/saved/:id", function(req,res) {
+router.get("/api/articles/saved/:id", function(req,res) {
     db.Article.findOneAndUpdate(
         {id: req.params.id},
         {$set: {saved:false}}
@@ -67,7 +67,7 @@ router.get("api/articles/saved/:id", function(req,res) {
     });
 });
 
-router.get("api/articles/saved/:id", function(req,res){
+router.get("/api/articles/saved/:id", function(req,res){
     db.Comment.create(req.body).then(function(dbComment) {
         return db.Article.findOneAndUpdate(
             {id: req.params.id},

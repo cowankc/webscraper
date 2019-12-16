@@ -14,10 +14,11 @@ function renderArticles() {
 
 function scrapeArticles() {
     event.preventDefault();
+    console.log("yes")
     $.ajax({
         method: "GET",
         url: "/api/scrape",
     }).then(function(data) {
-        $('body').append(data)
+        $("#scrapedList").append("<p>Test</p>")
     })
 }
