@@ -1,5 +1,4 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-info">
-  <a class="navbar-brand" href="/">The Ringer Article Scraper</a>
   <button class="navbar-toggler" data-toggle="collapse" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
@@ -10,12 +9,9 @@
         <a class="nav-link" href="/">Home
         </a>
       </li>
-      <li class="nav-item active">
+      <li class="nav-item">
         <a class="nav-link" href="/savedarticles">Saved Articles
         </a>
-      </li>
-      <li class="nav-item">
-        <a class="btn btn-warning clear">CLEAR ARTICLES</a>
       </li>
     </ul>
   </div>
@@ -28,7 +24,15 @@
     </div>
     <div class="caption">
     <h1>The Ringer Article Scraper</h1>
-    <p>Saved Articles 
-    </p>
+    <p>Your saved Articles</p>
+      <div class="mt-4">
+        <a class="btn btn-warning clear" id="scrape-button">Scrape Articles</a>
+        <a class="btn btn-warning clear">Clear Articles</a>
+      </div>
+
     </div>
 </div>
+
+<div class="savedList"></div>
+
+<script src="../public/webscraper.js"></script>

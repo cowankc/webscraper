@@ -9,7 +9,7 @@ router.get("/api/scrape", function(re,res) {
         let article = {};
         let $ = cheerio.load(response.data);
         $(".c-entry-box--compact__body").each(function(i,element) {
-            article.title = $(this).children("h2").children("a").text();
+            article.title = $(this).children("h2").text();
             article.url = $(this).children("h2").children("a").attr("href");
             article.summary = $(this).children("p").text();
             article.saved = false;
@@ -34,7 +34,7 @@ router.get("/api/articles", function(req,res) {
     });
 });
 
-router.put("/api/articles/:id", function(req,res) {
+router.put("/api/articles/:_id", function(req,res) {
     db.Article.findOneAndUpdate(
         { id: req.params.id},
         { $set: {saved: true}}
@@ -55,7 +55,7 @@ router.get("/api/articles/saved", function(req,res) {
     });
 });
 
-router.get("/api/articles/saved/:id", function(req,res) {
+router.get("/api/articles/saved/:_id", function(req,res) {
     db.Article.findOneAndUpdate(
         {id: req.params.id},
         {$set: {saved:false}}
@@ -67,7 +67,7 @@ router.get("/api/articles/saved/:id", function(req,res) {
     });
 });
 
-router.get("/api/articles/saved/:id", function(req,res){
+router.get("/api/articles/saved/:_id", function(req,res){
     db.Comment.create(req.body).then(function(dbComment) {
         return db.Article.findOneAndUpdate(
             {id: req.params.id},
