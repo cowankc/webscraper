@@ -1,21 +1,20 @@
 $(document).ready(function() {
-    let scrapedList = $(".scrapedList")
-    scrapeArticles()
-    $("#scrape-button").on("click", loadArticles);
-    $(document).on("click", ".savebtn", saveArticles)
-    $("#clear").on("click", clearArticles)
+    let savedList = $(".savedList")
+    loadArticles()
+    $(document).on("click", "#clear", clearArticles)
+    $(document).on("click", ".removebtn", unSaveArticles)
 
     function loadArticles () {
         $.ajax({
             method: "GET",
-            url: "/api/articles",
+            url: "/api/articles/saved",
         }).then(function(data) {
             console.log(data)
-            scrapedList.empty();
+            savedList.empty();
             if (data) {
                 renderArticles(data);
             } else {
-                scrapedList.append("<div>No Articles to Show</div>");
+                savedList.append("<div>No Articles to Show</div>");
             }
         }). catch(function(err){
             console.log(err);
@@ -27,8 +26,9 @@ $(document).ready(function() {
         let head = $("<h3 class='head'>").text(article.title)
         let link = $("<a type='button' class='btn btn-info m-2' class='link' target='_blank'>").attr("href", article.url).text("Read Article")
         let body = $("<div class='articleBody'>").text(article.summary);
-        let save = $("<button type='button' class='savebtn btn btn-info m-2'>Save Article</button>")
-        div.append(head, body, link, save);
+        let remove = $("<button type='button' class='removebtn btn btn-danger m-2'>Remove from Saved</button>")
+        let notes = $("<button type='button' class='notebtn btn btn-warning text-white m-2'>Add Notes</button>")
+        div.append(head, body, link, remove, notes);
         div.data("_id", article._id);
         return div;
     }
@@ -38,7 +38,7 @@ $(document).ready(function() {
         for (let i = 0; i < articles.length; i++) {
             newArticles.push(articleDiv(articles[i]));
         }
-        scrapedList.append(newArticles)
+        savedList.append(newArticles)
     }
 
     function scrapeArticles() {
@@ -50,21 +50,21 @@ $(document).ready(function() {
         })
     }
 
-    function saveArticles() {
-        let savedArticle = $(this).parents(".article").data()
+    function unSaveArticles() {
+        let deletedArticle = $(this).parents(".article").data()
         $(this).parents(".article").remove(); 
-        savedArticle.saved = true;
+        deletedArticle.saved = false;
         $.ajax({
-            method: "PUT",
-            url: "api/articles/saved/" + savedArticle._id,
-            data: savedArticle
+            method: "DELETE",
+            url: "api/articles/saved/" + deletedArticle._id,
         }).then(function(data) {
-            scrapeArticles();
+            console.log(deletedArticle)
+            loadArticles();
         })
     }
 
     function clearArticles() {
-        scrapedList.empty();
+        savedList.empty();
         scrapeArticles();
     }
 
