@@ -1,9 +1,9 @@
 $(document).ready(function() {
     let scrapedList = $(".scrapedList")
     scrapeArticles()
-    $("#scrape-button").on("click", loadArticles);
+    $(document).on("click", "#scrape-button", loadArticles);
     $(document).on("click", ".savebtn", saveArticles)
-    $("#clear").on("click", clearArticles)
+    $(document).on("click", "#clear", clearArticles)
 
     function loadArticles () {
         $.ajax({
@@ -56,10 +56,10 @@ $(document).ready(function() {
         savedArticle.saved = true;
         $.ajax({
             method: "PUT",
-            url: "api/articles/saved/" + savedArticle._id,
+            url: "/api/articles/" + savedArticle._id,
             data: savedArticle
         }).then(function(data) {
-            scrapeArticles();
+            console.log(data)
         })
     }
 

@@ -59,13 +59,25 @@ router.get("/api/articles/saved/:_id", function(req,res) {
     db.Article.findOneAndUpdate(
         {id: req.params.id},
         {$set: {saved:false}}
-    ) .then(function(dbArticle) {
+    ).then(function(dbArticle) {
         res.json(dbArticle);
     })
     .catch(function(err) {
         res.json(err);
     });
 });
+
+router.delete("/api/articles/saved/:_id", function(req,res){
+    db.Article.findByIdAndDelete(
+        {id: req.params._id}
+    ).then(function(dbArticle) {
+        res.json(dbArticle);
+    })
+    .catch(function(err) {
+        res.json(err);
+    });
+});
+
 
 router.get("/api/articles/saved/:_id", function(req,res){
     db.Comment.create(req.body).then(function(dbComment) {
@@ -81,5 +93,6 @@ router.get("/api/articles/saved/:_id", function(req,res){
         res.json(err);
     });
 });
+
 
 module.exports = router;
