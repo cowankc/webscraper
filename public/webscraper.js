@@ -2,6 +2,8 @@ $(document).ready(function() {
     let scrapedList = $(".scrapedList")
     // scrapeArticles()
     $("#scrape-button").on("click", loadArticles);
+    $(document).on("click", ".savebtn", saveArticles)
+    $("#clear").on("click", clearArticles)
 
     function loadArticles () {
         $.ajax({
@@ -23,15 +25,10 @@ $(document).ready(function() {
     function articleDiv(article) {
         let div = $("<div class='article border border-info p-3 m-5'>");
         let head = $("<h3 class='head'>").text(article.title)
-        let link = $("<a class='link' target='_blank'>").attr("href", article.url).text("Read Article")
-            // $("<div class='head>'").append(
-            // $("<h3>").append(
-            //     $("<a class='articleLink' target='_blank'>")
-            //         .attr("href", article.url)
-            //             .text(article.title),
-            // $("<a class='btn btn-warning'>Save</a>")));
+        let link = $("<a type='button' class='btn btn-info m-2' class='link' target='_blank'>").attr("href", article.url).text("Read Article")
         let body = $("<div class='articleBody'>").text(article.summary);
-        div.append(head, body, link);
+        let save = $("<button type='button' class='savebtn btn btn-info m-2'>Save Article</button>")
+        div.append(head, body, link, save);
         div.data("_id", article._id);
         return div;
     }
@@ -45,13 +42,30 @@ $(document).ready(function() {
     }
 
     function scrapeArticles() {
-        console.log("yes")
         $.ajax({
             method: "GET",
             url: "/api/scrape",
         }).then(function(data) {
-            loadArticles()
+            res.json(data)
         })
+    }
+
+    function saveArticles() {
+        let savedArticle = $(this).parents(".article").data()
+        $(this).parents(".article").remove(); 
+        savedArticle.saved = true;
+        $.ajax({
+            method: "PUT",
+            url: "api/articles/" + savedArticle._id,
+            data: savedArticle
+        }).then(function(data) {
+            scrapeArticles();
+        })
+    }
+
+    function clearArticles() {
+        scrapedList.empty();
+        scrapeArticles();
     }
 
 })
