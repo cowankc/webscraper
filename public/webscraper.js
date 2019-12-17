@@ -21,8 +21,9 @@ $(document).ready(function() {
     }
 
     function articleDiv(article) {
-        let div = $("<div class='article'>");
-        let head = $("<div class='head'>").text(article.title)
+        let div = $("<div class='article border border-info p-3 m-5'>");
+        let head = $("<h3 class='head'>").text(article.title)
+        let link = $("<a class='link' target='_blank'>").attr("href", article.url).text("Read Article")
             // $("<div class='head>'").append(
             // $("<h3>").append(
             //     $("<a class='articleLink' target='_blank'>")
@@ -30,7 +31,7 @@ $(document).ready(function() {
             //             .text(article.title),
             // $("<a class='btn btn-warning'>Save</a>")));
         let body = $("<div class='articleBody'>").text(article.summary);
-        div.append(head, body);
+        div.append(head, body, link);
         div.data("_id", article._id);
         return div;
     }

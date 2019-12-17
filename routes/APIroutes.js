@@ -11,7 +11,7 @@ router.get("/api/scrape", function(re,res) {
         $(".c-entry-box--compact__body").each(function(i,element) {
             article.title = $(this).children("h2").text();
             article.url = $(this).children("h2").children("a").attr("href");
-            article.summary = $(this).children("p").text();
+            article.summary = $(this).children("h2").next().text();
             article.saved = false;
             if (article.title && article.url) {
                 db.Article.create(article).then(function(dbArticle){
