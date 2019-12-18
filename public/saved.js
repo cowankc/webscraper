@@ -3,7 +3,7 @@ $(document).ready(function() {
     loadArticles()
     $(document).on("click", "#clear", clearArticles)
     $(document).on("click", ".removebtn", unSaveArticles)
-    $(document).on("click", ".notebtn", openNotes)
+    // $(document).on("click", ".notebtn", openNotes)
 
     function loadArticles () {
         $.ajax({
@@ -70,21 +70,21 @@ $(document).ready(function() {
         scrapeArticles();
     }
 
-    function openNotes() {
-        event.preventDefault()
-        let article = $(this).parents(".article").data();
-        $.ajax({
-            method: "GET",
-            url: "/api/articles/saved/" + article.id
-        }).done(function(data){
-            $("#note-body").append("<h3>").text(data.title);
-            $("#note-body").append("<div class='form-group'><input class='form-control' rows='3' id='noteinput' placeholder='notes'></input></div>");
-            $("#note-body").append("<button class='btn btn-secondary' data-id='" + data._id + "' id='savenote'>Save Note</button>");
-            if (data.note) {
-                $("#bodyinput").val(data.note.body);
-            }
-            $("#notes").modal("toggle");
-        })
-    }
+    // function openNotes() {
+    //     event.preventDefault()
+    //     let article = $(this).parents(".article").data();
+    //     $.ajax({
+    //         method: "GET",
+    //         url: "/api/articles/saved/" + article.id
+    //     }).done(function(data){
+    //         $("#note-body").append("<h3>").text(data.title);
+    //         $("#note-body").append("<div class='form-group'><input class='form-control' rows='3' id='noteinput' placeholder='notes'></input></div>");
+    //         $("#note-body").append("<button class='btn btn-secondary' data-id='" + data._id + "' id='savenote'>Save Note</button>");
+    //         if (data.note) {
+    //             $("#bodyinput").val(data.note.body);
+    //         }
+    //         $("#notes").modal("toggle");
+    //     })
+    // }
 
 })

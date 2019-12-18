@@ -34,11 +34,12 @@ router.get("/api/articles", function(req,res) {
     });
 });
 
-router.put("/api/articles/:_id", function(req,res) {
+router.put("/api/articles/:id", function(req,res) {
     db.Article.findOneAndUpdate(
-        { id: req.params.id},
-        { $set: {saved: true}}
-    ).then(function(dbArticle) {
+        { _id: req.params.id },
+        { $set: { saved: true } }
+    )
+    .then(function(dbArticle) {
         res.json(dbArticle);
     })
     .catch(function(err){
@@ -66,33 +67,5 @@ router.get("/api/articles/saved/:_id", function(req,res) {
         res.json(err);
     });
 });
-
-router.delete("/api/articles/saved/:_id", function(req,res){
-    db.Article.findByIdAndDelete(
-        {id: req.params._id}
-    ).then(function(dbArticle) {
-        res.json(dbArticle);
-    })
-    .catch(function(err) {
-        res.json(err);
-    });
-});
-
-
-router.get("/api/articles/saved/:_id", function(req,res){
-    db.Comment.create(req.body).then(function(dbComment) {
-        return db.Article.findOneAndUpdate(
-            {id: req.params.id},
-            {comment: dbComment.id},
-            {new: true}
-        )
-    }).then(function(dbArticle) {
-        res.json(dbArticle);
-    })
-    .catch(function(err) {
-        res.json(err);
-    });
-});
-
 
 module.exports = router;

@@ -1,5 +1,5 @@
 $(document).ready(function() {
-    let scrapedList = $(".scrapedList")
+    let scrapedList = $(".scrapedList");
     scrapeArticles()
     $(document).on("click", "#scrape-button", loadArticles);
     $(document).on("click", ".savebtn", saveArticles)
@@ -30,6 +30,9 @@ $(document).ready(function() {
         let save = $("<button type='button' class='savebtn btn btn-info m-2'>Save Article</button>")
         div.append(head, body, link, save);
         div.data("_id", article._id);
+        div.data("title", article.title);
+        div.data("summary", article.summary);
+        div.data("url", article.url)
         return div;
     }
 
@@ -54,12 +57,14 @@ $(document).ready(function() {
         let savedArticle = $(this).parents(".article").data()
         $(this).parents(".article").remove(); 
         savedArticle.saved = true;
+        // savedArticleList.push(savedArticle);
+        console.log(savedArticle)
         $.ajax({
             method: "PUT",
             url: "/api/articles/" + savedArticle._id,
             data: savedArticle
-        }).then(function(data) {
-            console.log(data)
+        }).then(function(result) {
+            console.log(result)
         })
     }
 
